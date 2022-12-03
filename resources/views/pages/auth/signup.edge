@@ -1,0 +1,19 @@
+@layout('layouts/main')
+
+@section('content')
+
+  <h1>Sign Up!</h1>
+
+  @forms.post({ action: route('auth.signup') })
+
+    @!inputs.text({ label: 'Username', name: 'username' })
+    @!inputs.text({ label: 'Email', name: 'email', type: 'email' })
+    @!inputs.text({ label: 'Password', name: 'password', type: 'password' })
+
+    @buttons.primary({ type: 'submit' })
+      Sign Up!
+    @end
+
+  @end
+
+@endsection

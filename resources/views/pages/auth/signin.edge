@@ -1,0 +1,25 @@
+@layout('layouts/main')
+
+@section('content')
+
+  <h1>Sign In!</h1>
+
+  @if (flashMessages.has('form'))
+    @alerts.error()
+      {{ flashMessages.get('form') }}
+    @end
+  @endif
+
+  @forms.post({ action: route('auth.signin') })
+
+    @!inputs.text({ label: 'Username/Email', name: 'uid' })
+    @!inputs.text({ label: 'Password', name: 'password', type: 'password' })
+    @!inputs.checkbox({ label: 'Remember Me', name: 'remember_me' })
+
+    @buttons.primary({ type: 'submit' })
+      Sign In!
+    @end
+
+  @end
+
+@endsection

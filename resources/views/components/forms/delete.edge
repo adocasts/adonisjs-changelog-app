@@ -1,0 +1,5 @@
+@set('action', action.includes('?') ? `${action}&_method=DELETE` : `${action}?_method=DELETE`)
+
+<form method="POST" action="{{ action }}">
+  {{{ await $slots.main() }}}
+</form>

@@ -1,0 +1,26 @@
+@set('defaultValue', value ?? '')
+@set('value', flashMessages.get(name) || defaultValue)
+@set('errors', flashMessages.get(`errors.${name}`) ?? errors)
+
+<div class="mb-4">
+  <label>
+    @if (label)
+      <span class="block font-semibold opacity-60 uppercase text-xs tracking-wider">
+        {{ label }}
+      </span>
+    @endif
+    <input 
+      type="{{ type ?? 'text' }}" 
+      placeholder="{{ placeholder ?? '' }}" 
+      name="{{ name }}"
+      value="{{ value }}"
+      class="input input-bordered w-full max-w-xs" 
+    />
+  </label>
+
+  @if (Array.isArray(errors) && errors.length)
+    <div class="text-xs text-red-500">
+      {{ errors.join(', ') }}
+    </div>
+  @endif
+</div>
