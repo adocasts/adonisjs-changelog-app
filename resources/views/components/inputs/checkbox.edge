@@ -1,11 +1,20 @@
-<div class="form-control">
-  <label class="label cursor-pointer">
-    <span class="label-text">{{ label }}</span> 
+@set('labelPosition', labelPosition ?? 'left')
+
+<div class="form-control {{ className }}">
+  <label class="label justify-start cursor-pointer">
+    @if (labelPosition === 'left')
+      <span class="label-text mr-3">{{ label }}</span> 
+    @endif
+
     <input 
       type="checkbox" 
       class="checkbox checkbox-primary" 
       name="{{ name }}" 
       {{{ checked ? 'checked=checked' : '' }}} 
     />
+
+    @if (labelPosition === 'right')
+      <span class="label-text ml-3">{{ label }}</span>
+    @endif
   </label>
 </div>

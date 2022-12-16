@@ -1,0 +1,32 @@
+@layout('layouts/main')
+
+@section('content')
+
+  <div class="max-w-md bg-base-200 flex flex-col items-center p-6 rounded-xl mx-auto">
+    <h1 class="text-3xl font-semibold mb-6">Edit Team {{ team.name }}</h1>
+
+    @if (flashMessages.has('form'))
+      @alerts.error()
+        {{ flashMessages.get('form') }}
+      @end
+    @endif
+
+    @if (request.qs().newUser)
+      @alerts.info({ className: 'mb-6' })
+        Welcome to our changelog!
+      @end
+    @endif
+
+    @forms.put({ action: route('teams.update', { slug: team.slug }) })
+
+      @!inputs.text({ label: 'Name', name: 'name', value: team.name })
+      @!inputs.text({ label: 'Slug', name: 'slug', value: team.slug })
+
+      @buttons.primary({ type: 'submit', className: 'w-full mt-3' })
+        Update Team
+      @end
+
+    @end
+  </div>
+
+@endsection

@@ -1,6 +1,7 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import { schema, rules } from '@ioc:Adonis/Core/Validator'
 import User from 'App/Models/User'
+import TeamService from 'App/Services/TeamService'
 
 export default class AuthController {
   public async signupShow({ view }: HttpContextContract) {
@@ -18,8 +19,13 @@ export default class AuthController {
     const user = await User.create(data)
 
     await auth.login(user)
+    
+    const team = await TeamService.stubDefaultTeam(user)
 
-    return response.redirect().toRoute('home')
+    return response.redirect().toRoute(
+      'teams.edit', 
+      { id: team.id }, 
+      { qs: { newUser: 1 } })
   }
 
   public async signinShow({ view }: HttpContextContract) {

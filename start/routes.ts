@@ -28,4 +28,13 @@ Route.get('/signup', 'AuthController.signupShow').as('auth.signup.show')
 Route.post('/signup', 'AuthController.signup').as('auth.signup')
 Route.get('/signin', 'AuthController.signinShow').as('auth.signin.show')
 Route.post('/signin', 'AuthController.signin').as('auth.signin')
-Route.get('/signout', 'AuthController.signout').as('auth.signout')
+Route.post('/signout', 'AuthController.signout').as('auth.signout')
+
+Route.get('/teams/:id/edit', 'TeamsController.edit').as('teams.edit')
+Route.put('/teams/:slug', 'TeamsController.update').as('teams.update')
+
+Route.group(() => {
+
+  Route.get('/', 'DashboardController.index').as('dashboard')
+
+}).prefix(':teamSlug').as('app').middleware(['appState'])

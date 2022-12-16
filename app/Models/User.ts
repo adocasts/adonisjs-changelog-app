@@ -1,6 +1,6 @@
 import { DateTime } from 'luxon'
 import Hash from '@ioc:Adonis/Core/Hash'
-import { column, beforeSave, BaseModel, manyToMany, ManyToMany } from '@ioc:Adonis/Lucid/Orm'
+import { column, beforeSave, BaseModel, manyToMany, ManyToMany, hasMany, HasMany, belongsTo, BelongsTo } from '@ioc:Adonis/Lucid/Orm'
 import Team from './Team'
 import Post from './Post'
 
@@ -20,6 +20,9 @@ export default class User extends BaseModel {
   @column()
   public rememberMeToken: string | null
 
+  @column()
+  public lastAccessedTeamId: number | null
+
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
 
@@ -33,9 +36,16 @@ export default class User extends BaseModel {
     }
   }
 
-  @manyToMany(() => Team)
+  @manyToMany(() => Team, {
+    pivotTable: 'team_users'
+  })
   public teams: ManyToMany<typeof Team>
 
-  @manyToMany(() => Post)
-  public posts: ManyToMany<typeof Post>
+  @hasMany(() => Post)
+  public posts: HasMany<typeof Post>
+
+  @belongsTo(() => Team, {
+    foreignKey: 'last_accessed_team_id'
+  })
+  public team: BelongsTo<typeof Team>
 }

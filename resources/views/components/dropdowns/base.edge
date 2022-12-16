@@ -1,0 +1,12 @@
+<div class="dropdown">
+  <label tabindex="0" class="btn m-1">
+    @if ($slots.trigger)
+      {{{ await $slots.trigger() }}}
+    @else
+      {{ trigger }}
+    @endif
+  </label>
+  <ul tabindex="0" class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52">
+    {{{ await $slots.main() }}}
+  </ul>
+</div>

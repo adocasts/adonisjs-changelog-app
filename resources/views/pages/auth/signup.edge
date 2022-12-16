@@ -2,18 +2,20 @@
 
 @section('content')
 
-  <h1>Sign Up!</h1>
+  <div class="max-w-md bg-base-200 flex flex-col items-center p-6 rounded-xl mx-auto">
+    <h1 class="text-3xl font-semibold mb-6">Sign Up!</h1>
 
-  @forms.post({ action: route('auth.signup') })
+    @forms.post({ action: route('auth.signup') })
 
-    @!inputs.text({ label: 'Username', name: 'username' })
-    @!inputs.text({ label: 'Email', name: 'email', type: 'email' })
-    @!inputs.text({ label: 'Password', name: 'password', type: 'password' })
+      @!inputs.text({ label: 'Username', name: 'username' })
+      @!inputs.text({ label: 'Email', name: 'email', type: 'email' })
+      @!inputs.text({ label: 'Password', name: 'password', type: 'password' })
 
-    @buttons.primary({ type: 'submit' })
-      Sign Up!
+      @buttons.primary({ type: 'submit', className: 'w-full mt-3' })
+        Sign Up!
+      @end
+
     @end
-
-  @end
+  </div>
 
 @endsection

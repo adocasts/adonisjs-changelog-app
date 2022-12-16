@@ -1,8 +1,9 @@
 import { DateTime } from 'luxon'
-import { BaseModel, column, ManyToMany, manyToMany } from '@ioc:Adonis/Lucid/Orm'
+import { BaseModel, column, HasMany, hasMany, ManyToMany, manyToMany } from '@ioc:Adonis/Lucid/Orm'
 import User from './User'
 import Post from './Post'
 import Category from './Category'
+import { slugify } from '@ioc:Adonis/Addons/LucidSlugify'
 
 export default class Team extends BaseModel {
   @column({ isPrimary: true })
@@ -12,7 +13,11 @@ export default class Team extends BaseModel {
   public name: string
 
   @column()
-  public slug: string
+  @slugify({
+    strategy: 'dbIncrement',
+    fields: ['name']
+  })
+  public slug: string | null
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
@@ -20,12 +25,14 @@ export default class Team extends BaseModel {
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   public updatedAt: DateTime
 
-  @manyToMany(() => User)
+  @manyToMany(() => User, {
+    pivotTable: 'team_users'
+  })
   public users: ManyToMany<typeof User>
 
-  @manyToMany(() => Post)
-  public posts: ManyToMany<typeof Post>
+  @hasMany(() => Post)
+  public posts: HasMany<typeof Post>
 
-  @manyToMany(() => Category)
-  public categories: ManyToMany<typeof Category>
+  @hasMany(() => Category)
+  public categories: HasMany<typeof Category>
 }
