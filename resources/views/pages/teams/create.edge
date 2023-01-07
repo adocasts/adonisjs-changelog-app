@@ -3,7 +3,7 @@
 @section('content')
 
   <div class="max-w-md bg-base-200 flex flex-col items-center p-6 rounded-xl mx-auto">
-    <h1 class="text-3xl font-semibold mb-6">Edit Team {{ team.name }}</h1>
+    <h1 class="text-3xl font-semibold mb-6">Create Team</h1>
 
     @if (flashMessages.has('form'))
       @alerts.error()
@@ -11,14 +11,12 @@
       @end
     @endif
 
-    @forms.put({ action: route('teams.update', { team: team.id }) })
-
-      @!inputs.text({ label: 'Name', name: 'name', value: team.name })
+    @forms.post({ action: route('teams.store') })
+      @!inputs.text({ label: 'Name', name: 'name' })
 
       @buttons.primary({ type: 'submit', className: 'w-full mt-3' })
-        Update Team
+        Create Team
       @end
-
     @end
   </div>
 

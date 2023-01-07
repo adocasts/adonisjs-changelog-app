@@ -23,6 +23,9 @@ export default class User extends BaseModel {
   @column()
   public lastAccessedTeamId: number | null
 
+  @column()
+  public lastAccessedProjectId: number | null
+
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
 
@@ -45,7 +48,7 @@ export default class User extends BaseModel {
   public posts: HasMany<typeof Post>
 
   @belongsTo(() => Team, {
-    foreignKey: 'last_accessed_team_id'
+    foreignKey: 'lastAccessedTeamId'
   })
   public team: BelongsTo<typeof Team>
 }

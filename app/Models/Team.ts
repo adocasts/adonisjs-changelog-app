@@ -3,7 +3,7 @@ import { BaseModel, column, HasMany, hasMany, ManyToMany, manyToMany } from '@io
 import User from './User'
 import Post from './Post'
 import Category from './Category'
-import { slugify } from '@ioc:Adonis/Addons/LucidSlugify'
+import Project from './Project'
 
 export default class Team extends BaseModel {
   @column({ isPrimary: true })
@@ -11,13 +11,6 @@ export default class Team extends BaseModel {
 
   @column()
   public name: string
-
-  @column()
-  @slugify({
-    strategy: 'dbIncrement',
-    fields: ['name']
-  })
-  public slug: string | null
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
@@ -35,4 +28,7 @@ export default class Team extends BaseModel {
 
   @hasMany(() => Category)
   public categories: HasMany<typeof Category>
+
+  @hasMany(() => Project)
+  public projects: HasMany<typeof Project>
 }

@@ -23,8 +23,8 @@ export default class AuthController {
     const team = await TeamService.stubDefaultTeam(user)
 
     return response.redirect().toRoute(
-      'teams.edit', 
-      { id: team.id }, 
+      'app.dashboard', 
+      { team: team.id }, 
       { qs: { newUser: 1 } })
   }
 
@@ -49,7 +49,7 @@ export default class AuthController {
     }
 
     session.flash('success', `Welcome back, ${auth.user?.username}`)
-    return response.redirect().toRoute('home')
+    return response.redirect().toRoute('app.dashboard', { team: auth.user?.lastAccessedTeamId })
   }
 
   public async signout({ response, session, auth }: HttpContextContract) {

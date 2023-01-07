@@ -1,5 +1,5 @@
 @set('action', action.includes('?') ? `${action}&_method=PUT` : `${action}?_method=PUT`)
 
-<form method="POST" action="{{ action }}">
+<form method="POST" action="{{ action }}" {{{ attrs }}}>
   {{{ await $slots.main() }}}
 </form>

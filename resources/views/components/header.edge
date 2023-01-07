@@ -23,13 +23,45 @@
         @endif
       </div>
       <div class="inline-flex">
-        <a class="btn btn-ghost normal-case text-xl">Changelog</a>
-        @if (auth.user && team)
-          /
-          @dropdowns.base({ trigger: team.name })
-            <li><a href="{{ route('teams.edit', { id: team.id }) }}">Edit {{ team.name }}</a></li>
-            <li><a href="#">+ Create New Team</a></li>
-          @end
+        <a class="btn btn-ghost normal-case text-lg" href="/">Changelog</a>
+        @if (auth.user && team && project)
+          <div class="px-1 flex items-center">
+            <div class="h-6 border-r-2 border-slate-600 rotate-12"></div>
+          </div>
+          <ul class="menu menu-compact menu-horizontal px-1" up-hungry>
+            <li tabindex="0">
+              <a class="text-lg">
+                {{ project.name }}
+                <svg class="fill-current" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path d="M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z"/></svg>
+              </a>
+              <ul class="p-2 bg-base-200">
+                <li class="menu-title">
+                  <span>Manage Project</span>
+                </li>
+                <li>
+                  <a href="{{ route('app.projects.edit', { team: team.id, project: project.id }) }}">
+                    {{ project.name }} Settings
+                  </a>
+                </li>
+                <li>
+                  <a href="{{ route('app.projects.create', { team: team.id }) }}" up-layer="new modal">
+                    Create New Project
+                  </a>
+                </li>
+                <li class="menu-title">
+                  <span>Switch Project</span>
+                </li>
+                @each (item in team.projects)
+                  @set('isActive', item.id === project.id)
+                  <li>
+                    <a href="{{ route('app.projects.edit', { team: team.id, project: item.id }) }}" class="{{ isActive ? 'bg-base-100' : '' }}">
+                      {{ item.name }}
+                    </a>
+                  </li>
+                @endeach
+              </ul>
+            </li>
+          </ul>
         @endif
       </div>
     </div>
@@ -42,7 +74,7 @@
               Parent
               <svg class="fill-current" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path d="M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z"/></svg>
             </a>
-            <ul class="p-2 bg-base-200">
+            <ul class="menu menu-compact p-2 bg-base-200">
               <li><a>Submenu 1</a></li>
               <li><a>Submenu 2</a></li>
             </ul>
@@ -51,7 +83,7 @@
         </ul>
       @endif
     </div>
-    <div class="navbar-end">
+    <div class="navbar-end" up-hungry>
       @if (!auth.user)
         @buttons.primary({ href: route('auth.signup.show'), className: 'mr-3' })
           Sign Up
@@ -60,15 +92,35 @@
           Sign In
         @end
       @else
-        <ul class="menu menu-horizontal px-1">
+        <ul class="menu menu-compact menu-horizontal px-1">
           <li tabindex="0">
-            <a>
-              {{ auth.user.username }}
+            <a class="text-lg">
+              {{ team.name }}
               <svg class="fill-current" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path d="M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z"/></svg>
             </a>
-            <ul class="p-2">
-              <li><a>Submenu 1</a></li>
-              <li>
+            <ul class="p-2 bg-base-200">
+              <li class="menu-title">
+                <span>Manage Team</span>
+              </li>
+              <li><a href="{{ route('teams.edit', { team: team.id }) }}">{{ team.name }} Settings</a></li>
+              <li><a href="{{ route('teams.create') }}">Create New Team</a></li>
+              <li class="menu-title">
+                <span>Switch Teams</span>
+              </li>
+              @each (item in teams)
+                @set('isActive', item.id === team.id)
+                <li>
+                  <a href="{{ route('app.dashboard', { team: item.id }) }}" class="{{ isActive ? 'bg-base-100' : '' }}">
+                    {{ item.name }}
+                  </a>
+                </li>
+              @endeach
+              <li class="menu-title">
+                <span>Manage Account</span>
+              </li>
+              <li><a>Account Settings</a></li>
+              <li><a>Profile Settings</a></li>
+              <li class="border-t border-base-100">
                 @forms.post({ action: route('auth.signout') })
                   <button type="submit">Signout</button>
                 @end

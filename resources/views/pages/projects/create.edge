@@ -1,0 +1,19 @@
+@layout('layouts/main')
+
+@section('content')
+
+  <div class="max-w-md bg-base-200 flex flex-col items-center p-6 rounded-xl mx-auto">
+    <h1 class="text-3xl font-semibold mb-6">Create A Project</h1>
+
+    @forms.post({ action: route('app.projects.store', { team: team.id }), attrs: 'form-project-create up-submit up-layer="root" up-scroll="preserve" up-fail-scroll="preserve" up-fail-target="[form-project-create]"' })
+
+      @!inputs.text({ label: 'Name', name: 'name' })
+
+      @buttons.primary({ type: 'submit', className: 'w-full mt-3' })
+        Create Project
+      @end
+
+    @end
+  </div>
+
+@endsection

@@ -1,0 +1,29 @@
+@layout('layouts/main')
+
+@section('content')
+
+  <div class="max-w-md bg-base-200 flex flex-col items-center p-6 rounded-xl mx-auto">
+    <h1 class="text-3xl font-semibold mb-6">Edit {{ project.name }}</h1>
+
+    @forms.put({ action: route('app.projects.update', { team: team.id, project: project.id }), attrs: 'up-submit up-scroll="preserve"' })
+
+      @!inputs.text({ label: 'Name', name: 'name', value: project.name })
+      @!inputs.text({ label: 'Subdomain', name: 'slug', value: project.slug })
+      @!inputs.text({ label: 'Site Url', name: 'siteUrl', value: project.siteUrl })
+
+      @buttons.primary({ type: 'submit', className: 'w-full mt-3' })
+        Update Project
+      @end
+
+    @end
+  </div>
+
+  <div class="flex justify-center mt-3">
+    @forms.delete({ action: route('app.projects.destroy', { team: team.id, project: project.id }), attrs: `up-submit up-confirm="Are you sure you want to delete the project ${project.name}?"` })
+      @buttons.base({ type: 'submit' })
+        Delete {{ project.name }}
+      @end
+    @end
+  </div>
+
+@endsection

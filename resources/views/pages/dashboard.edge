@@ -3,7 +3,52 @@
 @section('content')
 
   <main>
-    <h1>Your Dashboard</h1>
+    @if (request.qs().newUser)
+      @alerts.info({ className: 'mb-6' })
+        Welcome to our changelog!
+      @end
+    @endif
+
+    <h1 class="text-2xl font-bold">Your Projects</h1>
+    @if (team.projects.length)
+      <div class="overflow-x-auto">
+        <table class="table w-full">
+          <!-- head -->
+          <thead>
+            <tr>
+              <th>Id</th>
+              <th>Name</th>
+              <th>Users</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            @each (project in team.projects)
+              <tr>
+                <th>{{ project.id }}</th>
+                <td>
+                  <a href="{{ route('app.projects.edit', { team: team.id, project: project.id }) }}">
+                    {{ project.name }}
+                  </a>
+                </td>
+                <td>{{ project.$extras.team_count }}</td>
+                <td>actions</td>
+              </tr>
+            @endeach
+          </tbody>
+        </table>
+      </div>
+    @else
+      <div class="border-4 border-dashed border-base-300 rounded-xl p-6 mt-3">
+        <h3 class="font-bold">Create Your First Project</h3>
+        <p>
+          Get started by creating your first project. Each project has it's own changelog....
+        </p>
+        @buttons.primary({ href: route('app.projects.create', { team: team.id }), className: 'mt-6', attrs: 'up-layer="new modal"' })
+          Create Your First Project
+        @end
+      </div>
+    @endif
   </main>
 
 @endsection

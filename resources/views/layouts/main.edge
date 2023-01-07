@@ -4,13 +4,17 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Our AdonisJS Changelog Application</title>
+
+  <script src="https://unpkg.com/unpoly@2.7.1/unpoly.min.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/unpoly@2.7.1/unpoly.min.css">
+
   @entryPointStyles('app')
   @entryPointScripts('app')
 </head>
-<body>
+<body layout-root>
   @!header()
 
-  <div class="container mx-auto px-4">
+  <div class="container mx-auto px-4" up-main>
     @!section('content')
   </div>
 </body>
