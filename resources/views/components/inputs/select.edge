@@ -1,0 +1,13 @@
+<div class="mb-4">
+  <label>
+    @if (label)
+      <span class="block font-semibold opacity-60 uppercase text-xs tracking-wider">
+        {{ label }}
+      </span>
+    @endif
+
+    <select class="select select-bordered w-full max-w-xs" name="{{ name }}" {{{ attrs }}}>
+      {{{ await $slots.main() }}}
+    </select>
+  </label> 
+</div>

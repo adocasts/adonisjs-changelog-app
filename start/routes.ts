@@ -37,6 +37,9 @@ Route.group(() => {
   Route.post('/teams', 'TeamsController.store').as('teams.store')
   Route.get('/teams/:team/edit', 'TeamsController.edit').as('teams.edit')
   Route.put('/teams/:team', 'TeamsController.update').as('teams.update')
+  
+  Route.put('/teams/:team/invite', 'TeamInvitesController.store').as('teamInvites.store')
+  Route.get('/teams/:team/invite/:id', 'TeamInvitesController.accept').as('teamInvites.accept')
 }).middleware(['appState'])
 
 Route.group(() => {

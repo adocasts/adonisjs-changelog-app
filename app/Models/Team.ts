@@ -4,6 +4,7 @@ import User from './User'
 import Post from './Post'
 import Category from './Category'
 import Project from './Project'
+import TeamInvite from './TeamInvite'
 
 export default class Team extends BaseModel {
   @column({ isPrimary: true })
@@ -19,7 +20,8 @@ export default class Team extends BaseModel {
   public updatedAt: DateTime
 
   @manyToMany(() => User, {
-    pivotTable: 'team_users'
+    pivotTable: 'team_users',
+    pivotColumns: ['role_id']
   })
   public users: ManyToMany<typeof User>
 
@@ -31,4 +33,7 @@ export default class Team extends BaseModel {
 
   @hasMany(() => Project)
   public projects: HasMany<typeof Project>
+
+  @hasMany(() => TeamInvite)
+  public teamInvites: HasMany<typeof TeamInvite>
 }

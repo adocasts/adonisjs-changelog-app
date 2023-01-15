@@ -13,7 +13,13 @@
 
     @forms.post({ action: route('auth.signin') })
 
-      @!inputs.text({ label: 'Username/Email', name: 'uid' })
+      @if (flashMessages.has('invite'))
+        @set('invitePayload', flashMessages.get('invite'))
+        <input type="hidden" name="inviteId" value="{{ invitePayload.inviteId }}" />
+        <input type="hidden" name="signature" value="{{ invitePayload.signature }}" />
+      @endif
+
+      @!inputs.text({ label: 'Username/Email', name: 'uid', value: email })
       @!inputs.text({ label: 'Password', name: 'password', type: 'password' })
       @!inputs.checkbox({ 
         label: 'Remember Me', 

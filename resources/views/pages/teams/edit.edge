@@ -2,24 +2,94 @@
 
 @section('content')
 
-  <div class="max-w-md bg-base-200 flex flex-col items-center p-6 rounded-xl mx-auto">
-    <h1 class="text-3xl font-semibold mb-6">Edit Team {{ team.name }}</h1>
+  @forms.panel({ 
+    title: 'Edit Team', 
+    method: 'put', 
+    form: { action: route('teams.update', { team: team.id }) }
+  })
 
-    @if (flashMessages.has('form'))
-      @alerts.error()
-        {{ flashMessages.get('form') }}
-      @end
-    @endif
+    @!inputs.text({ label: 'Name', name: 'name', value: team.name })
 
-    @forms.put({ action: route('teams.update', { team: team.id }) })
-
-      @!inputs.text({ label: 'Name', name: 'name', value: team.name })
-
-      @buttons.primary({ type: 'submit', className: 'w-full mt-3' })
+    @slot('footer')
+      @buttons.base({ type: 'submit', className: 'btn-sm' })
         Update Team
       @end
+    @endslot
+  @end
 
+  @forms.panel({ 
+    title: 'Invite Team Members', 
+    method: 'put', 
+    form: { action: route('teamInvites.store', { team: team.id }) }
+  })
+
+    @!inputs.text({ label: 'Email', name: 'email' })
+
+    @inputs.select({ label: 'Role', name: 'roleId' })
+      @each (role in roles)
+        <option value="{{ role.id }}">{{ role.name }}</option>
+      @endeach
     @end
-  </div>
+
+    @slot('footer')
+      @buttons.base({ type: 'submit', className: 'btn-sm' })
+        Invite Member
+      @end
+    @endslot
+  @end
+
+  @if (team.teamInvites?.length)
+    @forms.panel({ title: 'Pending Team Members' })
+
+      <table class="table w-full">
+        <!-- head -->
+        <thead>
+          <tr>
+            <th>Id</th>
+            <th>Email</th>
+            <th>Status</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          @each (invite in team.teamInvites)
+            <tr>
+              <th>{{ invite.id }}</th>
+              <td>{{ invite.email }}</td>
+              <td>{{ invite.inviteStatus.name }}</td>
+              <td>actions</td>
+            </tr>
+          @endeach
+        </tbody>
+      </table>
+      
+    @end
+  @endif
+
+  @forms.panel({ title: 'Team Members' })
+
+    <table class="table w-full">
+      <!-- head -->
+      <thead>
+        <tr>
+          <th>Id</th>
+          <th>Username</th>
+          <th>Role</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        @each (user in team.users)
+          <tr>
+            <th>{{ user.id }}</th>
+            <td>{{ user.username }}</td>
+            <td>{{ user.$extras.pivot_role_id }}</td>
+            <td>actions</td>
+          </tr>
+        @endeach
+      </tbody>
+    </table>
+    
+  @end
 
 @endsection

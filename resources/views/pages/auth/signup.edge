@@ -7,8 +7,14 @@
 
     @forms.post({ action: route('auth.signup') })
 
+      @if (flashMessages.has('invite'))
+        @set('invitePayload', flashMessages.get('invite'))
+        <input type="hidden" name="inviteId" value="{{ invitePayload.inviteId }}" />
+        <input type="hidden" name="signature" value="{{ invitePayload.signature }}" />
+      @endif
+
       @!inputs.text({ label: 'Username', name: 'username' })
-      @!inputs.text({ label: 'Email', name: 'email', type: 'email' })
+      @!inputs.text({ label: 'Email', name: 'email', type: 'email', value: email })
       @!inputs.text({ label: 'Password', name: 'password', type: 'password' })
 
       @buttons.primary({ type: 'submit', className: 'w-full mt-3' })

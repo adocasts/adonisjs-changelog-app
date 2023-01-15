@@ -1,0 +1,51 @@
+<div class="max-w-screen flex flex-col items-center mx-auto">
+  <div class="w-full md:grid md:grid-cols-3 md:gap-6">
+    <div class="md:col-span-1">
+      @if ($slots.title)
+        {{{ await $slots.title() }}}
+      @elseif (title)
+        <h1 class="text-lg font-medium leading-6">
+          {{ title }}
+        </h1>
+      @endif
+    </div>
+
+    <div class="bg-base-200 rounded-xl md:col-span-2 md:mt-0 mt-5">
+      @if (form)
+        @component(`components/forms/${method ?? 'post'}`, form)
+          <div class="p-6">
+            @if (flashMessages.has('form'))
+              @alerts.error()
+                {{ flashMessages.get('form') }}
+              @end
+            @endif
+
+            {{{ await $slots.main() }}}
+          </div>
+
+          @if ($slots.footer)
+            <div class="w-full bg-base-100/50 flex justify-end p-3 rounded-xl">
+              {{{ await $slots.footer() }}}
+            </div>
+          @endif
+        @endcomponent
+      @else
+        <div class="p-6">
+            @if (flashMessages.has('form'))
+              @alerts.error()
+                {{ flashMessages.get('form') }}
+              @end
+            @endif
+
+            {{{ await $slots.main() }}}
+          </div>
+
+          @if ($slots.footer)
+            <div class="w-full bg-base-100/50 flex justify-end p-3 rounded-xl">
+              {{{ await $slots.footer() }}}
+            </div>
+          @endif
+      @endif
+    </div>
+  </div>
+</div>

@@ -1,5 +1,7 @@
 import { bind } from '@adonisjs/route-model-binding'
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
+import InviteStatuses from 'App/Enums/InviteStatuses'
+import Role from 'App/Models/Role'
 import Team from 'App/Models/Team'
 import TeamService from 'App/Services/TeamService'
 import TeamStoreValidator from 'App/Validators/TeamStoreValidator'
@@ -23,7 +25,16 @@ export default class TeamsController {
 
   @bind()
   public async edit({ view }: HttpContextContract, team: Team) {
-    return view.render('pages/teams/edit', { team })
+    const roles = await Role.query().orderBy('name')
+
+    await team.load('teamInvites', query => query
+      .where('invite_status_id', InviteStatuses.PENDING)
+      .preload('inviteStatus')
+    )
+
+    await team.load('users')
+
+    return view.render('pages/teams/edit', { team, roles })
   }
 
   @bind()

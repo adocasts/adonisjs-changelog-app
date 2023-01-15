@@ -3,6 +3,7 @@ import Hash from '@ioc:Adonis/Core/Hash'
 import { column, beforeSave, BaseModel, manyToMany, ManyToMany, hasMany, HasMany, belongsTo, BelongsTo } from '@ioc:Adonis/Lucid/Orm'
 import Team from './Team'
 import Post from './Post'
+import InviteStatuses from 'App/Enums/InviteStatuses'
 
 export default class User extends BaseModel {
   @column({ isPrimary: true })
@@ -40,7 +41,8 @@ export default class User extends BaseModel {
   }
 
   @manyToMany(() => Team, {
-    pivotTable: 'team_users'
+    pivotTable: 'team_users',
+    pivotColumns: ['role_id']
   })
   public teams: ManyToMany<typeof Team>
 
